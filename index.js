@@ -29,6 +29,12 @@ async function run() {
 
     const visaCollection = client.db("visaNavigatorDB").collection("visa");
 
+    app.get("/visas", async (req, res) => {
+      const cursor = visaCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.post("/visas", async (req, res) => {
       const newVisa = req.body;
       console.log("data: ", newVisa);
