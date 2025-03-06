@@ -28,6 +28,9 @@ async function run() {
     await client.connect();
 
     const visaCollection = client.db("visaNavigatorDB").collection("visa");
+    const visaApplicationCollection = client
+      .db("visaNavigatorDB")
+      .collection("visaApplications");
 
     app.get("/visas", async (req, res) => {
       const cursor = visaCollection.find();
@@ -45,8 +48,17 @@ async function run() {
     app.post("/visas", async (req, res) => {
       const newVisa = req.body;
       console.log("data: ", newVisa);
-
       const result = await visaCollection.insertOne(newVisa);
+      res.send(result);
+    });
+
+    // for visa application
+    app.post("/visa-application", async (req, res) => {
+      const newVisaApplication = req.body;
+      console.log("application: ", newVisaApplication);
+      const result = await visaApplicationCollection.insertOne(
+        newVisaApplication
+      );
       res.send(result);
     });
 
