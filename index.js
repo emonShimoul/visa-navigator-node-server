@@ -55,10 +55,19 @@ async function run() {
     // for visa application
     app.post("/visa-application", async (req, res) => {
       const newVisaApplication = req.body;
-      console.log("application: ", newVisaApplication);
+      //   console.log("application: ", newVisaApplication);
       const result = await visaApplicationCollection.insertOne(
         newVisaApplication
       );
+      res.send(result);
+    });
+
+    app.get("/visa-application/:email", async (req, res) => {
+      const email = req.params.email;
+      //   console.log(email);
+      const query = { userEmail: email };
+      const cursor = visaApplicationCollection.find(query);
+      const result = await cursor.toArray();
       res.send(result);
     });
 
