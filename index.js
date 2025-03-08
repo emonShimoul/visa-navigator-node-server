@@ -31,7 +31,9 @@ async function run() {
     const visaApplicationCollection = client
       .db("visaNavigatorDB")
       .collection("visaApplications");
+    const userCollection = client.db("visaNavigatorDB").collection("users");
 
+    // Visa related APIs
     app.get("/visas", async (req, res) => {
       const cursor = visaCollection.find();
       const result = await cursor.toArray();
@@ -94,7 +96,7 @@ async function run() {
       res.send(result);
     });
 
-    // for visa application
+    // Visa application related APIs
     app.post("/visa-application", async (req, res) => {
       const newVisaApplication = req.body;
       //   console.log("application: ", newVisaApplication);
@@ -117,6 +119,20 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await visaApplicationCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // Users related API
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      //   console.log("Creating new user", newUser);
+      const result = await userCollection.insertOne(newUser);
       res.send(result);
     });
 
